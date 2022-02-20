@@ -18,7 +18,7 @@ def url_format(u):
     print('# Reading url input')
     time.sleep(1)
     ap = u[::-1]
-    count_u = 0
+    count_u = -1w
     for c in ap:
         count_u += 1
         if c == '/':
@@ -34,6 +34,7 @@ def url_format(u):
 
 # Uses Format function on Url input.
 url_input = url_format(url_i)
+
 
 # Requests site with cfscrape with the Url that has been formatted.
 # Also creates a Beautiful soup object that's formatted in lxml.
@@ -59,11 +60,11 @@ file_name_i = series_name(url_i)
 # Writes all 'a' tags and content with class 'portrait-element block-link titlefix episode' to txt file.
 f = open(file_name_i + '.txt', 'w')
 els = soup.find_all('a', class_='portrait-element block-link titlefix episode')
-print('# File will save in working directory as ' + file_name_i + '.txt')
-print('# Parsing html for links')
-time.sleep(2)
 f.write(str(els))
 f.close()
+print('# File will save in working directory as ' + file_name_i + '.txt')
+print('# Parsing html for links')
+time.sleep(1)
 
 
 # Creates a batch file of links of input series.
@@ -79,11 +80,11 @@ def create_batch():
     urls_ger = []
     count_lang = -1
     # Opens text file with all the 'a' tags and their content.
-    f = open(file_name_i + '.txt', 'r')
+    jk = open(file_name_i + '.txt', 'r')
     # Goes through line by line and saves only the lines that start with </a> or [<a to a list.
     # </a> is for the first line., [<a is for all the other lines.
     # </a>] is the last item that is not appended to the list.
-    for line in f:
+    for line in jk:
         if line[:4] == '</a>' or line[:3] == '[<a':
             if line != '</a>]':
                 links.append(line)
@@ -97,7 +98,7 @@ def create_batch():
         count = split.index(' href=', count)
         names.append(split[count + 3])
         urls.append('https://www.crunchyroll.com' + split[count + 1])
-    f.close()
+    jk.close()
     # adds which language for each episode.
     for x in names:
         count_lang += 1
@@ -128,12 +129,6 @@ def create_batch():
             urls_ger.append(urls[count_lang])
         else:
             urls_jap.append(urls[count_lang])
-
-    # Final print of urls and write with a \n.
-    x = open(file_name_i + '.txt', 'w')
-    for u in urls:
-        x.write(u + '\n')
-    x.close()
     # prints all available dub languages and asks user to pick one.
     print('Pick Audio: ')
     if len(urls_jap) > 0:
@@ -168,6 +163,12 @@ def create_batch():
     if lang_choice == 7:
         lang = urls_ger.copy()
 
+    # Final print of urls and write with a \n.
+    x = open(file_name_i + '.txt', 'w')
+    for u in lang:
+        x.write(u + '\n')
+    x.close()
+
 
 create_batch()
 
@@ -178,4 +179,3 @@ if print_true == 'y' or print_true == 'Y':
 else:
     print('# Exiting')
     exit(0)
-
